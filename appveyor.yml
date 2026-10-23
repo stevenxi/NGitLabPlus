@@ -11,6 +11,7 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 before_build:
+  - nuget restore NGitLab\NGitLab.Tests\packages.config -PackagesDirectory NGitLab\packages -NonInteractive
   - nuget restore NGitLab\NGitLabPlus.sln
 dotnet_csproj:
   patch: true
