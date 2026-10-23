@@ -65,10 +65,23 @@ namespace NGitLab.Impl {
         public IEnumerable<Commit> Commits => api.Get().GetAll<Commit>(repoPath + "/commits");
 
         public SingleCommit GetCommit(Sha1 sha) {
-            return api.Get().To<SingleCommit>(repoPath + "/commits/" + sha);
+            return GetCommit(sha.ToString());
+        }
+
+        public SingleCommit GetCommit(string revision)
+        {
+            if (string.IsNullOrWhiteSpace(revision))
+                throw new ArgumentException("Revision cannot be null or empty.", nameof(revision));
+
+            return api.Get().To<SingleCommit>(repoPath + "/commits/" + Uri.EscapeDataString(revision));
         }
 
         public IEnumerable<Commit> GetCommits(string branch, int perPage = 20, int page = 1)
+        {
+            return GetCommits(branch, false, perPage, page);
+        }
+
+        public IEnumerable<Commit> GetCommits(string branch, bool firstPageOnly, int perPage = 20, int page = 1)
         {
             var param = new List<string>();
 
@@ -76,12 +89,16 @@ namespace NGitLab.Impl {
                 param.Add($"ref_name={System.Web.HttpUtility.UrlEncode(branch)}");
 
             if (perPage != 20)
-                param.Add($"perPage={perPage}");
+                param.Add($"per_page={perPage}");
 
             if (page > 1)
                 param.Add($"page={page}");
 
-            return api.Get().GetAll<Commit>(repoPath + $"/commits?{string.Join("&", param)}");
+            var url = repoPath + $"/commits?{string.Join("&", param)}";
+            if (firstPageOnly)
+                return api.Get().To<Commit[]>(url);
+
+            return api.Get().GetAll<Commit>(url);
         }
 
         public IEnumerable<Diff> GetCommitDiff(Sha1 sha) {

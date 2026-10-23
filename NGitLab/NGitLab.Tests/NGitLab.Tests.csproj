@@ -63,6 +63,7 @@
     <Compile Include="RepositoryClient\ProjectSnippetsClientTests.cs" />
     <Compile Include="RepositoryClient\ProjectHooksClientTests.cs" />
     <Compile Include="RepositoryClient\RepositoryClientTests.cs" />
+    <Compile Include="RepositoryClient\RepositoryClientPaginationTests.cs" />
     <Compile Include="RepositoryClient\_RepositoryClientTests.cs" />
     <Compile Include="Sha1Tests.cs" />
     <Compile Include="UsersTests.cs" />

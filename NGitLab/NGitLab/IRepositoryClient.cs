@@ -15,6 +15,11 @@ namespace NGitLab {
         IEnumerable<Commit> Commits { get; }
         IEnumerable<Commit> GetCommits(string branch, int perPage = 20, int page = 1);
 
+        /// <summary>
+        /// Lists commits, optionally fetching only the requested page without following pagination links.
+        /// </summary>
+        IEnumerable<Commit> GetCommits(string branch, bool firstPageOnly, int perPage = 20, int page = 1);
+
         IFilesClient Files { get; }
         IBranchClient Branches { get; }
         IPipelinesClient Pipelines { get; }
@@ -25,6 +30,11 @@ namespace NGitLab {
         Task GetRawBlobAsync(string sha, Func<Stream, Task> parser);
         Task GetArchiveAsync(string sha, Func<Stream, Task> parser);
         SingleCommit GetCommit(Sha1 sha);
+
+        /// <summary>
+        /// Fetches a single commit by full or short SHA, branch, or tag without listing its history.
+        /// </summary>
+        SingleCommit GetCommit(string revision);
         IEnumerable<Diff> GetCommitDiff(Sha1 sha);
         CompareInfo Compare(Sha1 from, Sha1 to);
         CommitStatus GetCommitStatus(Sha1 sha);

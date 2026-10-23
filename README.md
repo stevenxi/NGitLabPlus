@@ -29,3 +29,24 @@ Get it from NuGet. You can simply install it with the Package Manager console:
 ## Maintainer
 
 Big thanks to @Scooletz to bringing this project to life. I am happy to continue his work.
+
+## Fetch a single commit or one page of history
+
+Use a direct commit lookup when deploying a selected revision. Full and short
+commit SHAs, branch names, and tags are accepted; this makes one API request
+without fetching commit history.
+
+```csharp
+var repository = client.GetRepository(projectId);
+var commit = repository.GetCommit("abc1234");
+```
+
+For a revision selector, request only the first page:
+
+```csharp
+var commits = repository.GetCommits("main", firstPageOnly: true, perPage: 50).ToArray();
+```
+
+This makes one API request and does not follow the response's next-page link.
+The optional `page` argument selects which single page to fetch. Existing
+`GetCommits(branch, perPage, page)` calls still fetch all remaining pages.
