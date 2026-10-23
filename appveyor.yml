@@ -2,8 +2,12 @@ version: 2.0.{build}
 branches:
   only:
   - NGitLabPlus
+  - master
+  - release-of-fork
 image: Visual Studio 2017
 configuration: Release
+init:
+  - echo NGitLabPlus repository appveyor.yml loaded
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.*'
@@ -22,6 +26,7 @@ dotnet_csproj:
   file_version: '{version}'
   informational_version: '{version}'
 build:
+  project: NGitLab\NGitLabPlus.sln
   verbosity: minimal
 test: off
 artifacts:
